@@ -1,0 +1,24 @@
+<div *ngIf="errors.length < 1">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <md-input-container>
+      <input mdInput type="text" formControlName="email" 
+      placeholder="{{placeholderEmail}}">
+    </md-input-container>
+
+    <md-input-container>
+      <input mdInput type="password" formControlName="password" 
+      placeholder="{{placeholderPassword}}">
+    </md-input-container>
+
+    <button md-raised-button type="submit" 
+    [disabled]="loginForm.invalid" color="primary">
+      {{submitButton}}
+    </button>
+  </form>
+</div>
+
+<div *ngIf="errors.length > 0">
+  <md-error *ngFor="let error of errors">
+    {{error.cod}}
+  </md-error>
+</div>

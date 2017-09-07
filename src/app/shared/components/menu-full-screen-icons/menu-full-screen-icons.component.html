@@ -1,0 +1,16 @@
+<div *ngIf="errors.length < 1">
+  <button md-mini-fab type="button" color="primary" (click)="toggleMenu()"
+  id="button-trigger-menu">
+    <md-icon>{{params.mdIconToMenuTrigger}}</md-icon>
+  </button>
+
+  <div id="menu-full" *ngIf="menuOpened">
+    
+  </div>
+</div>
+
+<div *ngIf="errors.length > 0">
+  <md-error *ngFor="let error of errors">
+    {{error.cod}}
+  </md-error>
+</div>

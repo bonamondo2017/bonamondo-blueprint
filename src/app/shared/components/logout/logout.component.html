@@ -1,0 +1,11 @@
+<div *ngIf="errors.length < 1">
+  <button md-mini-fab color="warn" type="button" (click)="logout()">
+    <md-icon>{{params?.mdIcon}}</md-icon>
+  </button>
+</div>
+
+<div *ngIf="errors.length > 0">
+  <md-error *ngFor="let error of errors">
+    {{error.cod}}
+  </md-error>
+</div>
