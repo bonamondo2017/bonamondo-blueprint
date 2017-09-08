@@ -12,7 +12,11 @@
       </md-input-container>
     </div>
     <div id="modules-menu-area">
-      <div>
+      <div class="menu-item" *ngFor="let item of menuIcons.menuModules">
+        <a (click)="navigate(item.route)">
+          <div><md-icon>{{item.icon}}</md-icon></div>
+          <div>{{item.description}}</div>
+        </a>
       </div> 
     </div>
     <div id="favourite-menu-area">

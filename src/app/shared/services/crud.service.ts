@@ -24,9 +24,9 @@ export class CrudService {
 
     if(params.order) {
       if(params.equalTo) {
-        ref = fbDatabase.ref(params.route).orderByChild(params.order[0]).equalTo(params.equalTo);
+        ref = fbDatabase.ref(params.route).orderByChild(params.order).equalTo(params.equalTo);
       }else {
-        ref = fbDatabase.ref(params.route).orderByChild(params.order[0]);
+        ref = fbDatabase.ref(params.route).orderByChild(params.order);
       }
     }else {
       if(params.equalTo) {
