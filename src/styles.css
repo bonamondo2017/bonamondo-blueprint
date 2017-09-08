@@ -2,3 +2,15 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import './assets/css/reset.css';
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+
+md-input-container label{
+    color: #ffffff !important;
+}
+
+#w2c {
+    background-color: red;
+    width: 300px;
+    margin: 0 auto;
+}

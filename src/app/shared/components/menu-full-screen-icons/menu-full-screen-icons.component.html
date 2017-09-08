@@ -4,8 +4,22 @@
     <md-icon>{{params.mdIconToMenuTrigger}}</md-icon>
   </button>
 
-  <div id="menu-full" *ngIf="menuOpened">
-    
+  <div [@myAnimation] id="menu-full" *ngIf="menuOpened">
+    <div id="search-menu-area">
+      <md-input-container>
+        <input mdInput type="search" placeholder="Search">
+        <md-icon>search</md-icon>
+      </md-input-container>
+    </div>
+    <div id="modules-menu-area">
+      <div>
+      </div> 
+    </div>
+    <div id="favourite-menu-area">
+      <div>
+
+      </div>
+    </div>
   </div>
 </div>
 

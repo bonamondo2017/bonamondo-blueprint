@@ -23,11 +23,20 @@ export class CrudService {
     } 
 
     if(params.order) {
-      ref = fbDatabase.ref(params.route).orderByChild(params.order[0]);
-    } else {
+      if(params.equalTo) {
+        ref = fbDatabase.ref(params.route).orderByChild(params.order[0]).equalTo(params.equalTo);
+      }else {
+        ref = fbDatabase.ref(params.route).orderByChild(params.order[0]);
+      }
+    }else {
+      if(params.equalTo) {
+        resolve({
+          code: "r-02",
+          message: "For EqualTo you need to set orderByChild (order)"
+        })        
+      }
       ref = fbDatabase.ref(params.route);
     }
-    
     ref
     .once('value')
     .then(snap => {
