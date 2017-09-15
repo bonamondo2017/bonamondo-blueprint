@@ -1,0 +1,24 @@
+<div id="transparent-back" *ngIf="toggle" (click)="onToggle($event)"></div>
+
+<div id="sidenav"
+*ngIf="toggle"
+[@myAnimation]>
+  <span 
+  *ngFor="let menu of params.menuSettings; let i = index;"
+  [ngStyle]="{ 'position': 'absolute', 'top': 60*(i+1)+'px', 'left': '20px'}">
+    <a (click)="onMenuRoute(menu.route)">{{menu.description}}</a>
+  </span>
+</div>
+
+
+
+<span *ngIf="errors.length < 1" id="menu-icon">
+  <a (click)="onToggle($event)">
+    <md-icon class="md-18" *ngIf="!toggle">{{mdIconOpen}}</md-icon>
+    <md-icon class="md-18" *ngIf="toggle">{{mdIconClose}}</md-icon>
+  </a>
+</span>
+
+<span *ngIf="errors.length > 0">
+  <md-error *ngFor="let error of errors">{{error.cod}} - {{error.message}}</md-error>
+</span>

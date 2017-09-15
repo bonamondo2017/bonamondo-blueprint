@@ -1,0 +1,39 @@
+<md-card class="mt10">
+  <h2><b>{{title}}</b></h2>
+  
+  <hr>
+  
+  <form (ngSubmit)="onSubmit()" [formGroup]="mainForm">
+    <div class="float-left">
+      <div class="float-left div-form-pattern">
+        <md-icon class="md-18">gesture</md-icon>
+      </div>
+      <div class="float-left mr10 div-form-pattern">
+      <md-input-container>
+        <input mdInput type="text" placeholder="Name"
+        formControlName="name">
+      </md-input-container>
+      </div>
+    </div>
+
+    <div class="float-left">
+      <div class="float-left div-form-pattern">
+        <md-icon>group_work</md-icon>
+      </div>
+      <md-select class="font-pattern" placeholder="Grupo de Ocupação" formControlName="related_topic">
+        <md-option *ngFor="let topic of relatedTopics" [value]="topic.name">{{topic.name}}</md-option>
+      </md-select>
+    </div>
+
+    <div class="clear-both"></div>
+    
+    <md-card-actions>
+      <button md-raised-button type="submit" color="primary">{{submitButton}}</button>
+    </md-card-actions>
+  </form>
+</md-card>
+
+
+<md-card class="list mt10">
+  <bonamondo-table-data [params]="paramsToTableData"></bonamondo-table-data>
+</md-card>

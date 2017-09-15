@@ -58,15 +58,17 @@ export class MenuFullScreenIconsComponent implements OnInit {
 
   ngOnInit() {
     fbAuth.onAuthStateChanged(res => {
-      this.uid = res['uid'];
-      this.crud.read({
-        route: 'menuFullScreenIcons',
-        order: 'uid',
-        equalTo: this.uid
-      })
-      .then(res=> {
-        this.menuIcons = res[0];
-      })
+      if(res) {
+        this.uid = res['uid'];
+        this.crud.read({
+          route: 'menuFullScreenIcons',
+          order: 'uid',
+          equalTo: this.uid
+        })
+        .then(res=> {
+          this.menuIcons = res[0];
+        })
+      }
     })
 
     if(this.params) {
@@ -82,6 +84,7 @@ export class MenuFullScreenIconsComponent implements OnInit {
 
   navigate = (route) => {
     this.router.navigate([route]);
+    this.menuOpened = false;
   }
 
   toggleMenu = () => {

@@ -16,6 +16,8 @@ import { MenuFullScreenIconsComponent } from './components/menu-full-screen-icon
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './guards/auth.guard';
 import { CrudService } from './services/crud.service';
+import { TableDataComponent } from './components/table-data/table-data.component';
+import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.component';
 
 @NgModule({
   imports: [
@@ -25,14 +27,18 @@ import { CrudService } from './services/crud.service';
   ],
   declarations: [
     MenuFullScreenIconsComponent,
+    MenuSidenavComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    TableDataComponent
   ],
   exports: [
     MaterialModule,
     MenuFullScreenIconsComponent,
+    MenuSidenavComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    TableDataComponent
   ],
   providers: [
     AuthenticationService,

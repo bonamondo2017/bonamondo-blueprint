@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
  */
 import { HomeComponent } from './components/home/home.component';
 import { MainComponent } from './main.component';
+import { TopicComponent } from './components/topic/topic.component';
 
 const routes: Routes = [{
   path: '', 
@@ -12,6 +13,12 @@ const routes: Routes = [{
   children: [{
     path: '',
     component: HomeComponent
+  }, {
+    path: 'topic',
+    component: TopicComponent
+  }, {
+    path: 'topic/:id',
+    component: TopicComponent
   }]
 }];
 

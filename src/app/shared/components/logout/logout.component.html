@@ -1,7 +1,7 @@
 <div *ngIf="errors.length < 1">
-  <button md-mini-fab color="warn" type="button" (click)="logout()">
+  <a (click)="logout()">
     <md-icon>{{params?.mdIcon}}</md-icon>
-  </button>
+  </a>
 </div>
 
 <div *ngIf="errors.length > 0">

@@ -1,0 +1,19 @@
+md-toolbar {
+    position: fixed;
+    top: 0;
+    background: #37474f;
+    color: #fff;
+    z-index: 100;
+}
+
+#router-outlet {
+    position: relative;
+    margin: 0 auto;
+    top: 70px;
+}
+
+#toolbar-title {
+    color: #fff;
+    margin: 0 0 0 30px;
+    padding: 0;
+}

@@ -1,7 +1,16 @@
 <md-toolbar>
-    <bonamondo-menu-full-screen-icons [params]="paramsToMenu"></bonamondo-menu-full-screen-icons>
+    <div class="w70p float-left">
+        <bonamondo-menu-sidenav [params]="paramsToMenu"></bonamondo-menu-sidenav>
+        <a [routerLink]="['/main/home']"> <span id="toolbar-title">{{title}}</span> </a>
+    </div>    
+    
+    <div class="w30p float-left">
+        <bonamondo-logout [params]="paramsToLogout" class="float-right"></bonamondo-logout>        
+    </div>
 
-    <bonamondo-logout [params]="paramsToLogout"></bonamondo-logout>
+    <div class="clear-both"></div>
 </md-toolbar>
-
-<router-outlet></router-outlet>
+  
+<div id="router-outlet">
+    <router-outlet></router-outlet>
+</div>

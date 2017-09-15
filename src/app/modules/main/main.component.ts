@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class MainComponent implements OnInit {
   paramsToLogout: any;
   paramsToMenu: any;
+  title: string = "BonamMondo";
 
   constructor() { }
 
@@ -17,7 +18,22 @@ export class MainComponent implements OnInit {
     }
 
     this.paramsToMenu = {
-      
+      menuSettings: [{
+        description: "Tópicos",
+        route: ['/main/topic']
+      }, {
+        description: "Delegações",
+        route: ['/main/delegation']
+      }, {
+        description: "Grupos de Ocupações",
+        route: ['/main/occupation-group']
+      }, {
+        description: "Instituições",
+        route: ['/main/institution']
+      }, {
+        description: "Ocupações",
+        route: ['/main/occupation']
+      }]
     }
   }
 
