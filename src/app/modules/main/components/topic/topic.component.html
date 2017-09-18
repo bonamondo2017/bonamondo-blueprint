@@ -20,9 +20,7 @@
       <div class="float-left div-form-pattern">
         <md-icon>group_work</md-icon>
       </div>
-      <md-select class="font-pattern" placeholder="Grupo de Ocupação" formControlName="related_topic">
-        <md-option *ngFor="let topic of relatedTopics" [value]="topic.name">{{topic.name}}</md-option>
-      </md-select>
+      <bonamondo-form-autocomplete-multiple [params]="paramsToFormAutocompleteMultiple" (formAutocompleteMultipleOutput)="handleFormAutocompleteMultipleOutput($event)"></bonamondo-form-autocomplete-multiple>
     </div>
 
     <div class="clear-both"></div>

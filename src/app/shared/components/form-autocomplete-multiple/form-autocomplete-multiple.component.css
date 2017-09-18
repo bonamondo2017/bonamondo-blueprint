@@ -1,0 +1,16 @@
+/deep/ md-chip.mat-chip:not(.mat-basic-chip) {
+    padding: 8px 1px 1px 12px;
+}
+
+/deep/ md-error {
+    font-size: 10px
+}
+
+.object-clear {
+    font-size: 10px;
+}
+
+.object-value {
+    font-size: 10px;
+    margin-right: 5px;
+}

@@ -15,8 +15,9 @@ import { CrudService } from './../../../../shared/services/crud.service';
 })
 export class TopicComponent implements OnInit {
   array: any;
+  formAutocompleteMultipleObject: any;
   mainForm: FormGroup;
-  isForeign: boolean = false;
+  paramsToFormAutocompleteMultiple: any = [];
   paramToSearch: any;
   paramsToTableData: any;
   relatedTopics: any;
@@ -58,6 +59,15 @@ export class TopicComponent implements OnInit {
     })
     /*update end*/
 
+    this.paramsToFormAutocompleteMultiple = {
+      source: 'firebase',
+      route: 'topics',
+      order: 'name',
+      description: 'name',
+      value: '__key',
+      placeholder: 'Tópico Relacionado'
+    }
+
     this.crud.read({
       route: 'topics',
       order: ['__key', 'desc']
@@ -67,11 +77,24 @@ export class TopicComponent implements OnInit {
     })
 
     this.mainForm = new FormGroup({
-      'name': new FormControl(null),
+      'name': new FormControl(null, Validators.required),
       'related_topic': new FormControl(null)
     });
 
     this.makeList();
+  }
+
+  handleFormAutocompleteMultipleOutput = (event) => {
+    for(let lim = event.length, i =0; i < lim; i++) {
+      console.log(event[i])
+    }
+
+    this.formAutocompleteMultipleObject = [];
+    this.formAutocompleteMultipleObject.push({
+      relatedTopic: event
+    });
+
+    console.log(this.formAutocompleteMultipleObject);
   }
 
   makeList = () => {
