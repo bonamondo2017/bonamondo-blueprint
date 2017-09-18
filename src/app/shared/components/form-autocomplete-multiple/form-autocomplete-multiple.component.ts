@@ -34,6 +34,7 @@ export class FormAutocompleteMultipleComponent implements OnInit {
   filteredArray = [];
   objectArray = [];
   objectTemp: any;
+  showComponent: boolean = false;
 
   constructor(private crud: CrudService) {
     this.bfamForm = new FormGroup({
@@ -68,6 +69,17 @@ export class FormAutocompleteMultipleComponent implements OnInit {
           cod: 'bfam-lo-02',
           message: "Definir campo da array que serve como descrição do autocomplete ({ description: 'nomeDoCampo' })"
         });
+      }
+      
+      if(this.params.update) {
+        this.showComponent = true;
+        if(this.params.update.length > 0) {
+          let tempArray = [];
+          tempArray.push(this.params.update[0]);
+          this.objectArray = tempArray[0];
+        }
+      } else {
+        console.log(78)
       }
 
       if(!this.params.value) {
@@ -105,6 +117,8 @@ export class FormAutocompleteMultipleComponent implements OnInit {
           this.filteredArray.push(el);
         });
         this.array = array;
+
+        this.removeItemObjectFromOption();
       })
     } else {
       this.errors.push({
@@ -152,19 +166,7 @@ export class FormAutocompleteMultipleComponent implements OnInit {
     this.bfamForm.get('bfam').patchValue(null);
     this.objectArray.push(this.objectTemp[0]);
     
-    
-    if(!this.params.keepSelectedItem) { //tirar elemento selecionado da array do autocomplete
-      this.array = this.array.filter(obj => {        
-        return obj.value != this.objectTemp[0].value;
-      });
-
-      this.filteredArray = [];
-      this.OrderByArray(this.array, "description").map(eg => {
-        this.filteredArray.push(eg)
-      });
-      this.formAutocompleteMultipleOutput.emit(this.objectArray);
-
-    }
+    this.removeItemObjectFromOption()
 
     this.objectTemp = null;
   }
@@ -205,5 +207,29 @@ export class FormAutocompleteMultipleComponent implements OnInit {
     }
 
     return this.filteredArray;
+  }
+
+  removeItemObjectFromOption = () => {
+    if(!this.params.keepSelectedItem) { //tirar elemento selecionado da array do autocomplete
+      let query = [];
+      this.filteredArray = [];
+
+      for(let l = this.array.length, i =0; i < l; i++){
+        for(let lim = this.objectArray.length, j = 0; j < lim; j++) {
+          //Aqui
+        }
+      }
+
+      this.filteredArray = this.array.filter(obj => {
+        obj.value.indexOf(query)
+      })
+
+      console.log(this.filteredArray)
+      
+      this.OrderByArray(this.array, "description").map(eg => {
+        this.filteredArray.push(eg)
+      });
+      this.formAutocompleteMultipleOutput.emit(this.objectArray);
+    }
   }
 }

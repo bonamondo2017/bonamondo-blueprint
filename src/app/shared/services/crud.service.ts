@@ -105,22 +105,17 @@ export class CrudService {
           for(let i= 0; i < obj.length; i++) {
             let temp = {}; 
             let limitStart; 
-            let limitEnd = (params.limit * params.page);
+            let limitEnd;
 
-            if(params.page > 1) { 
-              limitStart = ((params.limit * params.page) - params.limit + 1);
-            } else {
-              limitStart = ((params.limit * params.page) - params.limit);
-            }
+            limitStart = ((params.limit * params.page) - params.limit);
+            limitEnd = (params.limit * params.page) - 1;
 
-            console.log(obj[i])
             if(i >= limitStart && i <= limitEnd) {
               objFiltered.push(obj[i]); 
             }
           }
           
           obj = objFiltered;
-          console.log(obj)
         }
         
         obj.total = snap.numChildren();

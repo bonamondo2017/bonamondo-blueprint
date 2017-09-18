@@ -15,12 +15,13 @@ import { CrudService } from './../../../../shared/services/crud.service';
 })
 export class TopicComponent implements OnInit {
   array: any;
-  formAutocompleteMultipleObject: any;
+  formAutocompleteMultipleObject: any = [];
   mainForm: FormGroup;
-  paramsToFormAutocompleteMultiple: any = [];
+  paramsToFormAutocompleteMultiple: any;
   paramToSearch: any;
   paramsToTableData: any;
   relatedTopics: any;
+  showFormAutocompleteMultiple: boolean = false;
   submitToCreate: boolean;
   submitToUpdate: boolean;
   submitButton: string;
@@ -40,34 +41,41 @@ export class TopicComponent implements OnInit {
         this.paramToSearch = params.id;
         this.submitToCreate = false;
         this.submitToUpdate = true;
-        this.title = "Alterar Dados do Tópico";
-        this.submitButton = "Atualizar";
+        this.title = "Change Topic Data";
+        this.submitButton = "Update";
 
         this.crud.read({
           route: 'topics/'+this.paramToSearch.replace(':', '')
-        }).then(res => {     
+        }).then(res => {
           let obj = res;
-          
+
+          if(res['relatedTopics']) {
+            this.formAutocompleteMultipleObject.push(res['relatedTopics'][0]);
+            
+            this.makeFormAutocompleteMultiple();            
+            this.showFormAutocompleteMultiple = true;
+          } else {
+            this.makeFormAutocompleteMultiple();            
+            this.showFormAutocompleteMultiple = true;
+          }
+
           this.mainForm.get('name').setValue(obj['name']);
         })
       } else {
         this.submitToCreate = true;
         this.submitToUpdate = false;
-        this.title = "Novo Tópico";
-        this.submitButton = "Salvar";
+        this.title = "New Topic";
+        this.submitButton = "Create";
+
+        this.makeFormAutocompleteMultiple();            
+        this.showFormAutocompleteMultiple = true;
       }
     })
     /*update end*/
 
-    this.paramsToFormAutocompleteMultiple = {
-      source: 'firebase',
-      route: 'topics',
-      order: 'name',
-      description: 'name',
-      value: '__key',
-      placeholder: 'Tópico Relacionado'
-    }
-
+    /**
+     * Select options start
+     */
     this.crud.read({
       route: 'topics',
       order: ['__key', 'desc']
@@ -75,6 +83,9 @@ export class TopicComponent implements OnInit {
     .then(res => {
       this.relatedTopics = res;
     })
+    /**
+     * Select options end
+     */
 
     this.mainForm = new FormGroup({
       'name': new FormControl(null, Validators.required),
@@ -85,41 +96,42 @@ export class TopicComponent implements OnInit {
   }
 
   handleFormAutocompleteMultipleOutput = (event) => {
-    for(let lim = event.length, i =0; i < lim; i++) {
-      console.log(event[i])
-    }
-
     this.formAutocompleteMultipleObject = [];
-    this.formAutocompleteMultipleObject.push({
-      relatedTopic: event
-    });
+    this.formAutocompleteMultipleObject.push(event);
+  }
 
-    console.log(this.formAutocompleteMultipleObject);
+  makeFormAutocompleteMultiple = () => {
+    console.log(this.formAutocompleteMultipleObject)
+    this.paramsToFormAutocompleteMultiple = {
+      source: 'firebase',
+      route: 'topics',
+      order: 'name',
+      description: 'name',
+      value: '__key',
+      placeholder: 'Related Topics',
+      update: this.formAutocompleteMultipleObject
+    }
   }
 
   makeList = () => {
     this.paramsToTableData = {
       toolbar: {
-        title: "Lista de tópicos",
+        title: "Topics List",
         delete: "__key",
         search: true
       },
       list: {
         route: "topics",
         show: ['name'],
-        header: ['Tópico'],
+        header: ['Topic'],
         order: ['id', 'desc'],
         edit: {route: '/main/topic/', param: '__key'},
         source: true
       },
       actionToolbar: {
-        language: 'pt-br'
+        language: 'en-us'
       }
     };
-  }
-
-  onChangeForeigntopic = (events) => {
-    this.mainForm.get('is_foreign').setValue(events.checked);
   }
 
   onSubmit = () => {
@@ -142,12 +154,13 @@ export class TopicComponent implements OnInit {
       })
   
       this.router.navigate(['/main/topic']);
-  
-      this.makeList();
     } else {
+      let object = this.mainForm.value;
+      object.relatedTopics = this.formAutocompleteMultipleObject;
+
       let params = {
         route: 'topics',
-        object: this.mainForm.value
+        object: object
       };
 
       this.crud.create(params)
@@ -160,10 +173,11 @@ export class TopicComponent implements OnInit {
           duration: 3000
         })
       })
-
-      this.mainForm.get('name').setValue(null);
-
-      this.makeList();
     }
+
+    this.mainForm.reset();
+    
+    this.makeFormAutocompleteMultiple();
+    this.makeList();
   }
 }

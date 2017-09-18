@@ -142,17 +142,15 @@ export class TableDataComponent implements OnInit {
       if(!this.params.actionToolbar.language) {
         this.params.actionToolbar.language = "en";
       }
-
-      if(this.params.actionToolbar.language == 'en') {
-        this.placeholderToRowsPerPage = "Rows per page";
-        this.placeholderToPage = "of";
-        this.placeholderToSearch = "Field to search";
-      }
-
-      if(this.params.actionToolbar.language == 'pt-br') {
+      
+      if(this.params.actionToolbar.language == 'pt-BR') {
         this.placeholderToRowsPerPage = "Linhas por página";
         this.placeholderToPage = "de";
         this.placeholderToSearch = "Campo para pesquisar";
+      } else {
+        this.placeholderToRowsPerPage = "Rows per page";
+        this.placeholderToPage = "of";
+        this.placeholderToSearch = "Field to search";  
       }
     } 
     
