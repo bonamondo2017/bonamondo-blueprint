@@ -14,14 +14,12 @@ import { CrudService } from './../../../../shared/services/crud.service';
   styleUrls: ['./topic.component.css']
 })
 export class TopicComponent implements OnInit {
-  array: any;
-  formAutocompleteMultipleObject: any = [];
+  addToRelatedTopic: boolean = false;
   mainForm: FormGroup;
-  paramsToFormAutocompleteMultiple: any;
   paramToSearch: any;
   paramsToTableData: any;
   relatedTopics: any;
-  showFormAutocompleteMultiple: boolean = false;
+  relatedTopicsFiltered: any;
   submitToCreate: boolean;
   submitToUpdate: boolean;
   submitButton: string;
@@ -36,7 +34,7 @@ export class TopicComponent implements OnInit {
 
   ngOnInit() {
     /*update start*/
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {      
       if(params.id) {
         this.paramToSearch = params.id;
         this.submitToCreate = false;
@@ -49,16 +47,6 @@ export class TopicComponent implements OnInit {
         }).then(res => {
           let obj = res;
 
-          if(res['relatedTopics']) {
-            this.formAutocompleteMultipleObject.push(res['relatedTopics'][0]);
-            
-            this.makeFormAutocompleteMultiple();            
-            this.showFormAutocompleteMultiple = true;
-          } else {
-            this.makeFormAutocompleteMultiple();            
-            this.showFormAutocompleteMultiple = true;
-          }
-
           this.mainForm.get('name').setValue(obj['name']);
         })
       } else {
@@ -66,9 +54,6 @@ export class TopicComponent implements OnInit {
         this.submitToUpdate = false;
         this.title = "New Topic";
         this.submitButton = "Create";
-
-        this.makeFormAutocompleteMultiple();            
-        this.showFormAutocompleteMultiple = true;
       }
     })
     /*update end*/
@@ -82,6 +67,7 @@ export class TopicComponent implements OnInit {
     })
     .then(res => {
       this.relatedTopics = res;
+      this.relatedTopicsFiltered = res;
     })
     /**
      * Select options end
@@ -89,28 +75,11 @@ export class TopicComponent implements OnInit {
 
     this.mainForm = new FormGroup({
       'name': new FormControl(null, Validators.required),
-      'related_topic': new FormControl(null)
+      'related_topics': new FormArray([]),
+      'related_topics_name': new FormControl(null)
     });
 
     this.makeList();
-  }
-
-  handleFormAutocompleteMultipleOutput = (event) => {
-    this.formAutocompleteMultipleObject = [];
-    this.formAutocompleteMultipleObject.push(event);
-  }
-
-  makeFormAutocompleteMultiple = () => {
-    console.log(this.formAutocompleteMultipleObject)
-    this.paramsToFormAutocompleteMultiple = {
-      source: 'firebase',
-      route: 'topics',
-      order: 'name',
-      description: 'name',
-      value: '__key',
-      placeholder: 'Related Topics',
-      update: this.formAutocompleteMultipleObject
-    }
   }
 
   makeList = () => {
@@ -134,11 +103,102 @@ export class TopicComponent implements OnInit {
     };
   }
 
+  /**
+   * Shit over formArray start
+   */
+  onAddRelatedTopic = () => {
+    let backgroundColor;
+    this.relatedTopicsFiltered = [];
+
+    //define differente background for listing itens on array
+    if((this.mainForm.get('related_topics').value.length % 2 == 0)) {
+      backgroundColor = '#cfd8dc';
+    } else {
+      backgroundColor = '#fff';
+    }
+    
+    //object to array
+    let control = new FormGroup({      
+      'related_topics_name': new FormControl(this.mainForm.get('related_topics_name').value),
+      '_backgroundColor': new FormControl(backgroundColor)
+    });
+
+    //creating array with object
+    (<FormArray>this.mainForm.get('related_topics')).push(control);
+
+    //removing item from autocomplete select while it is part of array created
+    if(this.mainForm.get('related_topics').value.length > 0) {
+      for(let lim = this.relatedTopics.length, i = 0; i < lim; i++) {
+        if(this.relatedTopics[i].name != this.mainForm.get('related_topics_name').value) {
+          this.relatedTopicsFiltered.push(this.relatedTopics[i]);
+        }
+      }
+    }
+
+    //cleaning form to array
+    this.mainForm.get('related_topics_name').setValue(null);
+    
+    //removing add item to array button
+    this.addToRelatedTopic = false;
+  }
+
+  onFilterDescription(event) {
+    this.addToRelatedTopic = false;
+
+    let query = event.target.value;
+    
+    if(event != null) {
+      this.relatedTopicsFiltered = [];
+      for(let lim = this.relatedTopics['length'], i = 0; i < lim; i++) {
+        this.relatedTopics[i]
+        if(this.relatedTopics[i].related_topics_name.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+          this.relatedTopicsFiltered.push({
+            description: this.relatedTopics[i].related_topics_name,
+            value: this.relatedTopics[i].value
+          })
+        }
+      }
+    } else {
+      this.relatedTopicsFiltered = this.relatedTopics;
+    }
+
+    return this.relatedTopicsFiltered;
+  }
+
+  onRemoveRelatedTopic = (index) => {
+    const control = <FormArray>this.mainForm.controls['related_topics'];
+    
+    //putting it back to autocomplete select over relatedTopicsFiltered
+    this.relatedTopicsFiltered.push({
+      name: control.value[0].related_topics_name
+    });
+
+    //TO-DO sort relatedTopicsFiltered
+    
+
+    //removing from form array
+    control.removeAt(index);    
+
+    //reorganizing list of arrays over form array
+    for(let lim = this.mainForm.get('related_topics').value.length, i =0; i < lim; i++) {
+      if((i % 2 == 0)) {
+        control.controls[i].patchValue({_backgroundColor: '#cfd8dc'})
+      } else {
+        control.controls[i].patchValue({_backgroundColor: '#fff'})
+      }
+    }
+  }
+  /**
+   * Shit over formArray end
+   */
+
   onSubmit = () => {
     if(this.submitToUpdate) {
+      let object = this.mainForm.value;
+      
       let params = {
         route: 'topics',
-        objectToUpdate: this.mainForm.value,
+        objectToUpdate: object,
         paramToUpdate: this.paramToSearch.replace(':', '')
       };
   
@@ -156,7 +216,6 @@ export class TopicComponent implements OnInit {
       this.router.navigate(['/main/topic']);
     } else {
       let object = this.mainForm.value;
-      object.relatedTopics = this.formAutocompleteMultipleObject;
 
       let params = {
         route: 'topics',
@@ -176,8 +235,15 @@ export class TopicComponent implements OnInit {
     }
 
     this.mainForm.reset();
-    
-    this.makeFormAutocompleteMultiple();
+
     this.makeList();
+  }
+
+  toggleAddToRelatedTopic = (event) => {
+    if(event.target.value != "") {
+      this.addToRelatedTopic = true;
+    } else {
+      this.addToRelatedTopic = false;
+    }
   }
 }

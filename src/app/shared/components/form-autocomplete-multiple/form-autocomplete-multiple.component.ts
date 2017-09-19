@@ -50,6 +50,7 @@ export class FormAutocompleteMultipleComponent implements OnInit {
         
         case 'firebase':
           if(!this.params.route) {
+            console.log(this.params)
             this.errors.push({
               cod: 'bfam-lo-01',
               message: "Definir referência do firebase para montar opções do autocomplete ({ route: 'referenceParaOsDadosFirebase' })"
@@ -211,25 +212,25 @@ export class FormAutocompleteMultipleComponent implements OnInit {
 
   removeItemObjectFromOption = () => {
     if(!this.params.keepSelectedItem) { //tirar elemento selecionado da array do autocomplete
-      let query = [];
-      this.filteredArray = [];
-
-      for(let l = this.array.length, i =0; i < l; i++){
-        for(let lim = this.objectArray.length, j = 0; j < lim; j++) {
-          //Aqui
+      if(this.objectArray.length > 0) {
+        for(let lim = this.objectArray.length, i =0; i < lim; i++) {
+          this.array = this.array.filter(obj => {
+            if(this.objectArray.length > 0) {
+              return obj.value != this.objectArray[i].value
+            }
+          });
         }
+      } else {
+        this.array = this.array.filter(obj => {
+          return obj.value;
+        })
       }
-
-      this.filteredArray = this.array.filter(obj => {
-        obj.value.indexOf(query)
-      })
-
-      console.log(this.filteredArray)
       
-      this.OrderByArray(this.array, "description").map(eg => {
-        this.filteredArray.push(eg)
-      });
+
+      this.filteredArray = [];
+      this.OrderByArray(this.array, "description").map(eg => this.filteredArray.push(eg));
       this.formAutocompleteMultipleOutput.emit(this.objectArray);
+
     }
   }
 }

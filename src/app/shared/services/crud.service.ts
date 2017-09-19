@@ -142,7 +142,7 @@ export class CrudService {
       });
     }
 
-    if(!params.idToUpdate) {
+    if(!params.paramToUpdate) {
       reject({
         cod: "u-02",
         message: "Informar erro u-02 ao administrador"
@@ -156,7 +156,7 @@ export class CrudService {
       })
     }
 
-    let ref = fbDatabase.ref(params.route+"/"+params.idToUpdate);
+    let ref = fbDatabase.ref(params.route+"/"+params.paramToUpdate);
     ref.update(params.obj)
     .catch(rej => {
       reject({

@@ -16,11 +16,53 @@
       </div>
     </div>
 
-    <div class="float-left" *ngIf="showFormAutocompleteMultiple">
+    <div class="float-left">
       <div class="float-left div-form-pattern">
         <md-icon>group_work</md-icon>
       </div>
-      <bonamondo-form-autocomplete-multiple [params]="paramsToFormAutocompleteMultiple" (formAutocompleteMultipleOutput)="handleFormAutocompleteMultipleOutput($event)"></bonamondo-form-autocomplete-multiple>
+      
+      <md-form-field class="example-full-width">
+        <input mdInput placeholder="Related Topics" 
+        [mdAutocomplete]="auto"
+        (keyup)="onFilterDescription($event);"
+        (focus)="toggleAddToRelatedTopic($event)"
+        formControlName="related_topics_name">
+      </md-form-field>
+    
+      <md-autocomplete #auto="mdAutocomplete">
+        <md-option *ngFor="let item of relatedTopicsFiltered" [value]="item.name">
+          {{ item.name }}
+        </md-option>
+      </md-autocomplete>
+    
+      <md-icon class="md-18" *ngIf="addToRelatedTopic" (click)="onAddRelatedTopic()">add</md-icon>
+    </div>
+
+    <div class="clear-both"></div>
+
+    <div formGroupName="related_topics">
+      <div *ngFor="let relatedTopic of mainForm.get('related_topics').value; let i = index;">
+        <div [formGroupName]="i" [ngStyle]="{'background-color': relatedTopic._backgroundColor}">
+          <div class="float-left">
+            <div class="float-left div-form-pattern">
+              <md-icon class="md-18">location_on</md-icon>
+            </div>
+            
+            <div class="float-left div-form-pattern">
+              {{relatedTopic.related_topics_name}}
+            </div>
+          </div>
+
+          <div class="float-right mr10 div-form-pattern">
+            <button md-mini-fab type="button" color="warn"
+            (click)="onRemoveRelatedTopic(i)">
+              <md-icon>remove</md-icon>
+            </button>
+          </div>
+
+          <div class="clear-both"></div>
+        </div>
+      </div>
     </div>
 
     <div class="clear-both"></div>
