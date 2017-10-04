@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
+import { MdDatepickerModule, MdNativeDateModule, MdCardModule, MdDialogModule, MdSelectModule, MdCheckboxModule,
+MdInputModule,MatSnackBarModule, MdIconModule, MdButtonModule, MatSlideToggleModule,MdToolbarModule, MdProgressBarModule } from '@angular/material';
 
 /**
  * Components
  */
-import { FormAutocompleteMultipleComponent } from './components/form-autocomplete-multiple/form-autocomplete-multiple.component';
+//import { FormAutocompleteMultipleComponent } from './components/form-autocomplete-multiple/form-autocomplete-multiple.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { MenuFullScreenIconsComponent } from './components/menu-full-screen-icons/menu-full-screen-icons.component';
 import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.component';
+import { MultipleSelectComponent } from './components/multiple-select/multiple-select.component';
 import { TableDataComponent } from './components/table-data/table-data.component';
 
 /**
@@ -24,24 +26,48 @@ import { CrudService } from './services/crud.service';
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    MdCardModule,
+    MdDatepickerModule,
+    MdDialogModule,
+    MdSelectModule,
+    MdCheckboxModule,
+    MatSnackBarModule,
+    MdIconModule,
+    MdInputModule,
+    MdProgressBarModule,
+    MdButtonModule,
+    MatSlideToggleModule,
+    MdToolbarModule,
     ReactiveFormsModule
   ],
   declarations: [
-    FormAutocompleteMultipleComponent,
-    MenuFullScreenIconsComponent,
-    MenuSidenavComponent,
+    //FormAutocompleteMultipleComponent,
     LoginComponent,
     LogoutComponent,
+    MenuFullScreenIconsComponent,
+    MenuSidenavComponent,
+    MultipleSelectComponent,
     TableDataComponent
   ],
   exports: [
-    FormAutocompleteMultipleComponent,
-    MaterialModule,
-    MenuFullScreenIconsComponent,
-    MenuSidenavComponent,
+    //FormAutocompleteMultipleComponent,
     LoginComponent,
     LogoutComponent,
+    MdCardModule,
+    MdDatepickerModule,
+    MdDialogModule,
+    MdSelectModule,
+    MdCheckboxModule,
+    MatSnackBarModule,
+    MdIconModule,
+    MdInputModule,
+    MdProgressBarModule,
+    MdButtonModule,
+    MatSlideToggleModule,
+    MdToolbarModule,
+    MenuFullScreenIconsComponent,
+    MenuSidenavComponent,
+    MultipleSelectComponent,
     TableDataComponent
   ],
   providers: [

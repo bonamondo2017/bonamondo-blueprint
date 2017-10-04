@@ -1,0 +1,30 @@
+.clear-both {
+    clear: both;
+}
+
+.color-item {
+    background-color: #7ED3DF;
+}
+
+#add-button {
+    float: left;
+    cursor: pointer;
+}
+
+#form {
+    float: left;
+}
+
+#list-item {
+    display: block;
+    cursor: pointer;
+}
+
+#list-toggle {
+    max-height: 200px;
+    max-width: 150px;
+    line-height: 200%;
+    overflow: scroll;
+    position: absolute;
+    z-index: 999;
+}

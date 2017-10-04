@@ -1,0 +1,24 @@
+<div>
+  <div id="form">
+    <md-input-container>
+      <input mdInput placeholder="placeholder" (focusin)="showList($event)" 
+      (focusout)="showList($event)" autocomplete="off"
+      (keydown)="listNavigation($event)" (keyup)="filter($event)" [formControl]="itemCtrl">
+    </md-input-container>
+  </div>
+
+  <div id="add-button">
+    <md-icon *ngIf="addButton" (click)="createObject(itemCtrl.value)" >add</md-icon>
+  </div>
+
+  <div class="clear-both"></div>
+
+  <md-card id="list-toggle" *ngIf="showListToggle">
+    <div id="list-item" *ngFor="let item of filteredList; let i = index">
+      <div [ngStyle]="{'top': top + 'px', 'position': 'relative'}">
+        <div *ngIf="checkItemIndex == i" class="color-item" (mousedown)="objectListNavigation(i)">{{item.description}}</div>
+        <div *ngIf="checkItemIndex != i" (mousedown)="objectListNavigation(i)">{{item.description}}</div>
+      </div>
+    </div>
+  </md-card>
+</div>

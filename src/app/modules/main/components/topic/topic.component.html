@@ -18,24 +18,11 @@
 
     <div class="float-left">
       <div class="float-left div-form-pattern">
-        <md-icon>group_work</md-icon>
+        <md-icon class="md-18">gesture</md-icon>
       </div>
-      
-      <md-form-field class="example-full-width">
-        <input mdInput placeholder="Related Topics" 
-        [mdAutocomplete]="auto"
-        (keyup)="onFilterDescription($event);"
-        (focus)="toggleAddToRelatedTopic($event)"
-        formControlName="related_topics_name">
-      </md-form-field>
-    
-      <md-autocomplete #auto="mdAutocomplete">
-        <md-option *ngFor="let item of relatedTopicsFiltered" [value]="item.name">
-          {{ item.name }}
-        </md-option>
-      </md-autocomplete>
-    
-      <md-icon class="md-18" *ngIf="addToRelatedTopic" (click)="onAddRelatedTopic()">add</md-icon>
+      <div class="float-left mr10 div-form-pattern">
+        <bonamondo-multiple-select [params]="{route: 'topics', description: 'name', value: '__key'}"></bonamondo-multiple-select>
+      </div>
     </div>
 
     <div class="clear-both"></div>
