@@ -97,6 +97,7 @@ export class MultipleSelectComponent implements OnInit {
    * Métodos relacionados a criação da listagem
    */
   makeList = () => {
+    this.listArray = [];
     this.crud.read({
       route: this.route
     })
@@ -111,6 +112,7 @@ export class MultipleSelectComponent implements OnInit {
       }
       this.listArray = Object.keys(this.listArray).map(k => this.listArray[k]);
       this.filteredList = this.listArray;
+      this.removeItemFromArray();
     })
   }
 
@@ -217,7 +219,7 @@ export class MultipleSelectComponent implements OnInit {
           this.showListToggle = true;
         }
       } else {
-        this.filteredList = this.listArray;
+        this.removeItemFromArray();
       }
     }, 500);
   }
@@ -229,6 +231,25 @@ export class MultipleSelectComponent implements OnInit {
   /**
    * Métodos relacionados a remoção de opções da listagem
    */
+  removeItemFromArray = () => {
+    let check = false;
+    let array = [];
+    this.listArray.forEach(item => {
+      if(this.arrayOfObjects.length > 0){
+        this.arrayOfObjects.forEach(object => {
+          if(object === item.description){
+            check = true;
+          }
+        });
+      }
+      if(!check){
+        array.push(item);
+      }
+      check = false;
+    });
+    this.listArray = array;
+    this.filteredList = this.listArray;
+  }
 
   /**
    * Métodos relacionados a criação de array de objeto a partir das
@@ -237,9 +258,13 @@ export class MultipleSelectComponent implements OnInit {
   createObject = (value) => {
     this.arrayOfObjects.push(value);
     this.itemCtrl.setValue(undefined);
-    this.filteredList = this.listArray;
     this.addButton = false;
-    console.log(this.arrayOfObjects);
+    this.removeItemFromArray();
+  }
+
+  removeItemFromObject = (index) => {
+    this.arrayOfObjects.splice(index, 1);
+    this.makeList();
   }
 
 }

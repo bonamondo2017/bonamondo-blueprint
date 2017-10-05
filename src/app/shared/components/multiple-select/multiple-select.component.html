@@ -21,4 +21,12 @@
       </div>
     </div>
   </md-card>
+
+  <md-chip-list class="mat-chip-list-stacked">
+    <md-chip *ngFor="let chipItem of arrayOfObjects; let i = index">
+      <div class="object">{{chipItem}}</div>
+      <md-icon class="clear-icon" (click)="removeItemFromObject(i)">clear</md-icon>
+      <div style="clear: both;"></div>
+    </md-chip>
+  </md-chip-list>
 </div>

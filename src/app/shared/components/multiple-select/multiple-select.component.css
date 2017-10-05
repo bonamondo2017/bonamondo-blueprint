@@ -2,8 +2,23 @@
     clear: both;
 }
 
+.clear-icon {
+    cursor: pointer;
+    font-size: small;
+    float: left;
+}
+
 .color-item {
     background-color: #7ED3DF;
+}
+
+.object {
+    float: left;
+    width: 70%;
+}
+
+md-chip {
+    max-width: 200px;
 }
 
 #add-button {

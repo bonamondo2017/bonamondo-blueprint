@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MdDatepickerModule, MdNativeDateModule, MdCardModule, MdDialogModule, MdSelectModule, MdCheckboxModule,
-MdInputModule,MatSnackBarModule, MdIconModule, MdButtonModule, MatSlideToggleModule,MdToolbarModule, MdProgressBarModule } from '@angular/material';
+MdInputModule,MatSnackBarModule, MdIconModule, MdButtonModule, MatSlideToggleModule,MdToolbarModule, MdProgressBarModule, MdChipsModule } from '@angular/material';
 
 /**
  * Components
@@ -31,6 +31,7 @@ import { CrudService } from './services/crud.service';
     MdDialogModule,
     MdSelectModule,
     MdCheckboxModule,
+    MdChipsModule,
     MatSnackBarModule,
     MdIconModule,
     MdInputModule,
@@ -58,6 +59,7 @@ import { CrudService } from './services/crud.service';
     MdDialogModule,
     MdSelectModule,
     MdCheckboxModule,
+    MdChipsModule,
     MatSnackBarModule,
     MdIconModule,
     MdInputModule,
