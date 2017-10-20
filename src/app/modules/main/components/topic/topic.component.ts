@@ -16,6 +16,7 @@ import { CrudService } from './../../../../shared/services/crud.service';
 export class TopicComponent implements OnInit {
   addToRelatedTopic: boolean = false;
   mainForm: FormGroup;
+  objectFromUpdate: any = [];
   paramToSearch: any;
   paramsToTableData: any;
   relatedTopics: any;
@@ -24,6 +25,7 @@ export class TopicComponent implements OnInit {
   submitToUpdate: boolean;
   submitButton: string;
   title: string;
+  relatedTopicsFromMultipleSelectObject: any = [];
 
   constructor(
     private crud: CrudService,
@@ -46,7 +48,9 @@ export class TopicComponent implements OnInit {
           route: 'topics/'+this.paramToSearch.replace(':', '')
         }).then(res => {
           let obj = res;
-
+          for(let lim = obj['related_topics'].length, i = 0; i < lim; i++){
+            this.objectFromUpdate.push(obj['related_topics'][i].related_topics);
+          }
           this.mainForm.get('name').setValue(obj['name']);
         })
       } else {
@@ -103,105 +107,16 @@ export class TopicComponent implements OnInit {
     };
   }
 
-  /**
-   * Shit over formArray start
-   */
-  onAddRelatedTopic = () => {
-    let backgroundColor;
-    this.relatedTopicsFiltered = [];
-
-    //define differente background for listing itens on array
-    if((this.mainForm.get('related_topics').value.length % 2 == 0)) {
-      backgroundColor = '#cfd8dc';
-    } else {
-      backgroundColor = '#fff';
-    }
-    
-    //object to array
-    let control = new FormGroup({      
-      'related_topics_name': new FormControl(this.mainForm.get('related_topics_name').value),
-      '_backgroundColor': new FormControl(backgroundColor)
-    });
-
-    //creating array with object
-    (<FormArray>this.mainForm.get('related_topics')).push(control);
-
-    //removing item from autocomplete select while it is part of array created
-    if(this.mainForm.get('related_topics').value.length > 0) {
-      for(let lim = this.relatedTopics.length, i = 0; i < lim; i++) {
-        if(this.relatedTopics[i].name != this.mainForm.get('related_topics_name').value) {
-          this.relatedTopicsFiltered.push(this.relatedTopics[i]);
-        }
-      }
-    }
-
-    //cleaning form to array
-    this.mainForm.get('related_topics_name').setValue(null);
-    
-    //removing add item to array button
-    this.addToRelatedTopic = false;
-  }
-
-  onFilterDescription(event) {
-    this.addToRelatedTopic = false;
-
-    let query = event.target.value;
-    
-    if(event != null) {
-      this.relatedTopicsFiltered = [];
-      for(let lim = this.relatedTopics['length'], i = 0; i < lim; i++) {
-        this.relatedTopics[i]
-        if(this.relatedTopics[i].related_topics_name.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-          this.relatedTopicsFiltered.push({
-            description: this.relatedTopics[i].related_topics_name,
-            value: this.relatedTopics[i].value
-          })
-        }
-      }
-    } else {
-      this.relatedTopicsFiltered = this.relatedTopics;
-    }
-
-    return this.relatedTopicsFiltered;
-  }
-
-  onRemoveRelatedTopic = (index) => {
-    const control = <FormArray>this.mainForm.controls['related_topics'];
-    
-    //putting it back to autocomplete select over relatedTopicsFiltered
-    this.relatedTopicsFiltered.push({
-      name: control.value[0].related_topics_name
-    });
-
-    //TO-DO sort relatedTopicsFiltered
-    
-
-    //removing from form array
-    control.removeAt(index);    
-
-    //reorganizing list of arrays over form array
-    for(let lim = this.mainForm.get('related_topics').value.length, i =0; i < lim; i++) {
-      if((i % 2 == 0)) {
-        control.controls[i].patchValue({_backgroundColor: '#cfd8dc'})
-      } else {
-        control.controls[i].patchValue({_backgroundColor: '#fff'})
-      }
-    }
-  }
-  /**
-   * Shit over formArray end
-   */
-
   onSubmit = () => {
     if(this.submitToUpdate) {
       let object = this.mainForm.value;
-      
+
       let params = {
         route: 'topics',
         objectToUpdate: object,
         paramToUpdate: this.paramToSearch.replace(':', '')
       };
-  
+
       this.crud.update(params)
       .then(res => {
         this.mdsnackbar.open(res['message'], '', {
@@ -239,11 +154,14 @@ export class TopicComponent implements OnInit {
     this.makeList();
   }
 
-  toggleAddToRelatedTopic = (event) => {
-    if(event.target.value != "") {
-      this.addToRelatedTopic = true;
-    } else {
-      this.addToRelatedTopic = false;
+  multipleSelectOutputHandler(event){
+    for(let lim = event.length, i = 0; i < lim; i++){
+      if(i == lim - 1){
+        let control = new FormGroup({
+          related_topics: new FormControl(event[i])
+        });
+        (<FormArray>this.mainForm.get('related_topics')).push(control);
+      }
     }
   }
 }

@@ -21,34 +21,7 @@
         <md-icon class="md-18">gesture</md-icon>
       </div>
       <div class="float-left mr10 div-form-pattern">
-        <bonamondo-multiple-select [params]="{route: 'topics', description: 'name', value: '__key'}"></bonamondo-multiple-select>
-      </div>
-    </div>
-
-    <div class="clear-both"></div>
-
-    <div formGroupName="related_topics">
-      <div *ngFor="let relatedTopic of mainForm.get('related_topics').value; let i = index;">
-        <div [formGroupName]="i" [ngStyle]="{'background-color': relatedTopic._backgroundColor}">
-          <div class="float-left">
-            <div class="float-left div-form-pattern">
-              <md-icon class="md-18">location_on</md-icon>
-            </div>
-            
-            <div class="float-left div-form-pattern">
-              {{relatedTopic.related_topics_name}}
-            </div>
-          </div>
-
-          <div class="float-right mr10 div-form-pattern">
-            <button md-mini-fab type="button" color="warn"
-            (click)="onRemoveRelatedTopic(i)">
-              <md-icon>remove</md-icon>
-            </button>
-          </div>
-
-          <div class="clear-both"></div>
-        </div>
+        <bonamondo-multiple-select (multipleSelectOutput)="multipleSelectOutputHandler($event)" [params]="{route: 'topics', description: 'name', value: '__key', objectFromUpdate: objectFromUpdate}"></bonamondo-multiple-select>
       </div>
     </div>
 

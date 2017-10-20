@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import {Observable} from 'rxjs/Observable';
@@ -15,13 +15,14 @@ import { CrudService } from './../../services/crud.service';
   templateUrl: './multiple-select.component.html',
   styleUrls: ['./multiple-select.component.css']
 })
-export class MultipleSelectComponent implements OnInit {
+export class MultipleSelectComponent implements OnInit, OnChanges {
   errors: any = [];
   
   /**
    * Propriedades relacionadas a listagem de opções (obrigatório)
    */
   @Input() params;
+  @Output() multipleSelectOutput: EventEmitter<any> = new EventEmitter<any>();
   addButton: boolean = false;
   route: string;
   description: string;
@@ -36,6 +37,7 @@ export class MultipleSelectComponent implements OnInit {
   checkUpAndDown: boolean = false;
   limitToDown: number = 0;
   filterByTerm: any;
+  objectFromUpdate: any = [];
 
   /**
    * Propriedades relacionadas a remoção de opções da listagem (opcional)
@@ -85,11 +87,24 @@ export class MultipleSelectComponent implements OnInit {
       } else {
         this.value = this.params.value;
       }
+
       // Validações de parametros end
 
       this.itemCtrl = new FormControl(null);
 
       this.makeList();
+    }
+  }
+
+  ngOnChanges() {
+    console.log(100);
+    if(this.params){
+      if(this.params.objectFromUpdate){
+        if(this.params.objectFromUpdate.length > 0){
+          this.objectFromUpdate = this.params.objectFromUpdate;
+          console.log(this.objectFromUpdate);
+        }
+      }
     }
   }
 
@@ -260,6 +275,7 @@ export class MultipleSelectComponent implements OnInit {
     this.itemCtrl.setValue(undefined);
     this.addButton = false;
     this.removeItemFromArray();
+    this.multipleSelectOutput.emit(this.arrayOfObjects);
   }
 
   removeItemFromObject = (index) => {

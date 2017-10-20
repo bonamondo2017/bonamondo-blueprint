@@ -149,7 +149,7 @@ export class CrudService {
       });
     }
 
-    if(!params.object) {
+    if(!params.objectToUpdate) {
       reject({
         code: "error-c-01",
         description: "Object to push required"
@@ -157,7 +157,7 @@ export class CrudService {
     }
 
     let ref = fbDatabase.ref(params.route+"/"+params.paramToUpdate);
-    ref.update(params.obj)
+    ref.update(params.objectToUpdate)
     .catch(rej => {
       reject({
         cod: "error-u-01",
